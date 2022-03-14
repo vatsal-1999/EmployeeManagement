@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(
@@ -21,6 +22,16 @@ public class DepartmentController {
         return departmentService.getDepartments();
     }
 
+    @GetMapping(path = "{departmentId}")
+    public Department getDepartment(@PathVariable("departmentId") Long departmentId) {
+        return departmentService.getDepartment(departmentId);
+    }
+
+    @GetMapping(path = "findEmployees/{departmentId}")
+    public List<String> getEmployeesByDepartId(@PathVariable("departmentId") Long departmentId) {
+        return departmentService.getEmployeesByDepartId(departmentId);
+    }
+
     @PostMapping
     public void saveDepartment(@RequestBody Department department) {
         departmentService.saveDepartment(department);
@@ -28,8 +39,8 @@ public class DepartmentController {
 
     @PutMapping(path = "update/{departmentId}")
     public void updateDepartment(@PathVariable("departmentId") Long departmentId,
-                                 @RequestParam String name) {
-        departmentService.updateDepartment(departmentId, name);
+                                 @RequestBody Department department) {
+        departmentService.updateDepartment(departmentId, department);
     }
 
     @DeleteMapping(path = "delete/{departmentId}")

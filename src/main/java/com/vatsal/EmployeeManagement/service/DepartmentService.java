@@ -1,11 +1,14 @@
 package com.vatsal.EmployeeManagement.service;
 
 import com.vatsal.EmployeeManagement.entity.Department;
+import com.vatsal.EmployeeManagement.entity.Employee;
 import com.vatsal.EmployeeManagement.repository.DepartmentRepository;
+import com.vatsal.EmployeeManagement.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +17,9 @@ public class DepartmentService {
 
     @Autowired
     DepartmentRepository departmentRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     public List<Department> getDepartments() {
         return departmentRepository.findAll();
@@ -24,6 +30,7 @@ public class DepartmentService {
             throw new IllegalStateException("Department name cannot be empty");
         }
         department.setName(department.getName().toUpperCase());
+        department.setHead_of_dept(department.getHead_of_dept().toUpperCase());
         Optional<Department> optionalDepartment = departmentRepository.getDepartmentByName(department.getName());
         if (optionalDepartment.isPresent()) {
             throw new IllegalStateException("Department " + department.getName() + " already exists");
@@ -32,20 +39,23 @@ public class DepartmentService {
     }
 
     @Transactional
-    public void updateDepartment(Long departmentId, String name) {
+    public void updateDepartment(Long departmentId, Department department) {
         Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
         if (optionalDepartment.isEmpty()) {
             throw new IllegalStateException("Department with id " + departmentId + " does not exists");
         }
-        name = name.toUpperCase();
-        Department department = optionalDepartment.get();
-        if (name.length() > 0 && !name.equals(department.getName())) {
+        String name = department.getName() != null ? department.getName().toUpperCase() : "";
+        Department originalDepartment = optionalDepartment.get();
+        if (name.length() > 0 && !name.equals(originalDepartment.getName())) {
             if (departmentRepository.getDepartmentByName(name).isPresent()) {
                 throw new IllegalStateException("Department "+name+" already exists");
             }
-            department.setName(name);
-        } else {
-            throw new IllegalStateException("Department name is invalid");
+            originalDepartment.setName(name);
+        }
+
+        String head = department.getHead_of_dept() != null ? department.getHead_of_dept().toUpperCase() : "";
+        if (head.length() > 0 && !head.equals(originalDepartment.getHead_of_dept())) {
+            originalDepartment.setHead_of_dept(head);
         }
     }
 
@@ -59,5 +69,29 @@ public class DepartmentService {
         } catch (Exception e) {
             throw new IllegalStateException("There are records related to this department in employees table");
         }
+    }
+
+    public Department getDepartment(Long departmentId) {
+        Optional<Department> optional = departmentRepository.findById(departmentId);
+        if (optional.isEmpty()) {
+            throw new IllegalStateException("Department with id:" + departmentId + " does not exists");
+        }
+        return optional.get();
+    }
+
+    public List<String> getEmployeesByDepartId(Long departmentId) {
+        Optional<Department> departmentOptional = departmentRepository.findById(departmentId);
+        if (departmentOptional.isEmpty()) {
+            throw new IllegalStateException("Department with id:"+departmentId+" does not exists");
+        }
+        Department department = departmentOptional.get();
+        List<String> namesOfEmployees = new ArrayList<>();
+        List<Employee> employees = employeeRepository.findAll();
+        for (Employee employee : employees) {
+            if (employee.getDepartments().contains(department)) {
+                namesOfEmployees.add(employee.getName());
+            }
+        }
+        return namesOfEmployees;
     }
 }

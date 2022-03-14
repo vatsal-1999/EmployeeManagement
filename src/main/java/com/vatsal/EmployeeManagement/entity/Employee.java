@@ -1,7 +1,6 @@
 package com.vatsal.EmployeeManagement.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.vatsal.EmployeeManagement.audit.Auditable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name="employees_table")
-public class Employee {
+public class Employee extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +39,6 @@ public class Employee {
                     @JoinColumn(name="dep_id")
             }
     )
-    @JsonIgnore
     private List<Department> departments = new ArrayList<>();
 
     public Employee(){}

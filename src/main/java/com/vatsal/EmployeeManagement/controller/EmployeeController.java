@@ -22,6 +22,11 @@ public class EmployeeController {
         return employeeService.getEmployees();
     }
 
+    @GetMapping(path = "{employeeId}")
+    public Employee getEmployee(@PathVariable("employeeId") Long employeeId) {
+        return employeeService.getEmployee(employeeId);
+    }
+
     @PostMapping
     public void saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
         employeeService.saveEmployee(employeeDTO);
@@ -31,5 +36,10 @@ public class EmployeeController {
     public void updateEmployee(@PathVariable Long employeeId,
                                 @RequestBody EmployeeDTO employeeDTO) {
         employeeService.updateEmployee(employeeId,employeeDTO);
+    }
+
+    @DeleteMapping(path = "delete/{employeeId}")
+    public void deleteEmployee(@PathVariable("employeeId") Long employeeId) {
+        employeeService.deleteEmployee(employeeId);
     }
 }

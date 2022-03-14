@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
 @SpringBootApplication
+@EnableSwagger2
 public class EmployeeManagementApplication implements CommandLineRunner {
 
 	@Autowired
@@ -28,8 +30,8 @@ public class EmployeeManagementApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Department department1 = new Department("IT");
-		Department department2 = new Department("HR");
+		Department department1 = new Department("IT","RAHUL");
+		Department department2 = new Department("HR","KIRTI");
 
 		Employee employee1 = new Employee("Vatsal Aggarwal",
 				"7888486819",
