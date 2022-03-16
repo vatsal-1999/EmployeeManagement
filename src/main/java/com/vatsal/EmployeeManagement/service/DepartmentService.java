@@ -25,7 +25,7 @@ public class DepartmentService {
         return departmentRepository.findAll();
     }
 
-    public void saveDepartment(Department department) {
+    public boolean saveDepartment(Department department) {
         if (department.getName().trim().equals("")) {
             throw new IllegalStateException("Department name cannot be empty");
         }
@@ -36,6 +36,7 @@ public class DepartmentService {
             throw new IllegalStateException("Department " + department.getName() + " already exists");
         }
         departmentRepository.save(department);
+        return true;
     }
 
     @Transactional

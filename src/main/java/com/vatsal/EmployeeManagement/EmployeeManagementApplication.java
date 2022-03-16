@@ -30,24 +30,24 @@ public class EmployeeManagementApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Department department1 = new Department("IT","RAHUL");
-		Department department2 = new Department("HR","KIRTI");
-
-		Employee employee1 = new Employee("Vatsal Aggarwal",
-				"7888486819",
-				LocalDate.of(1999, Month.DECEMBER,11),
-				"aggarwal.vatsal5@gmail.com");
-		Employee employee2 = new Employee("Harbilas Singh",
-				"123456789",
-				LocalDate.of(1999, Month.JANUARY,10),
-				"singh.harbilas2000@gmail.com");
-
-		department1.getEmployees().add(employee1);
-		department2.getEmployees().add(employee2);
-
-		employee1.getDepartments().add(department1);
-		employee2.getDepartments().add(department2);
-
-		employeeRepository.saveAll(List.of(employee1,employee2));
+//		Department department1 = new Department("IT","RAHUL");
+//		Department department2 = new Department("HR","KIRTI");
+//
+//		Employee employee1 = new Employee("Vatsal Aggarwal",
+//				"7888486819",
+//				LocalDate.of(1999, Month.DECEMBER,11),
+//				"aggarwal.vatsal5@gmail.com");
+//		Employee employee2 = new Employee("Harbilas Singh",
+//				"123456789",
+//				LocalDate.of(1999, Month.JANUARY,10),
+//				"singh.harbilas2000@gmail.com");
+//
+//		department1.getEmployees().add(employee1);
+//		department2.getEmployees().add(employee2);
+//
+//		employee1.getDepartments().add(department1);
+//		employee2.getDepartments().add(department2);
+//
+//		employeeRepository.saveAll(List.of(employee1,employee2));
 	}
 }

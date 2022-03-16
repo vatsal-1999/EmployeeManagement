@@ -25,7 +25,7 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public void saveEmployee(EmployeeDTO employeeDTO) {
+    public boolean saveEmployee(EmployeeDTO employeeDTO) {
 
         if (employeeDTO.getName().equals("") ||
             employeeDTO.getPhoneNumber().equals("") ||
@@ -53,13 +53,14 @@ public class EmployeeService {
             department.getEmployees().add(employee);
         }
         employeeRepository.save(employee);
+        return true;
     }
 
     @Transactional
-    public void updateEmployee(Long employeeId, EmployeeDTO employeeDTO) {
+    public boolean updateEmployee(Long employeeId, EmployeeDTO employeeDTO) {
         Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
         if (optionalEmployee.isEmpty()) {
-            throw new IllegalStateException("No Employee with id:" + employeeId + " does not exists");
+            throw new IllegalStateException("Employee with id:" + employeeId + " does not exists");
         }
         Employee employee = optionalEmployee.get();
         if (employeeDTO.getName() !=  null && employeeDTO.getName().length() > 0) {
@@ -86,6 +87,7 @@ public class EmployeeService {
                 department.getEmployees().add(employee);
             }
         }
+        return true;
     }
 
     public void deleteEmployee(Long employeeId) {
